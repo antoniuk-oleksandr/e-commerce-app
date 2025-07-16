@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16
+    container_name: e-commerce-db
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - "../database:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - backend
+  # app:
+  #   image: e-commerce-app
+  #   container_name: e-commerce-app
+  #   environment:
+  #     DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - backend
+volumes:
+  database:
+
+networks:
+  backend:
+
