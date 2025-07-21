@@ -1,6 +1,6 @@
 FROM node:24-alpine
 
-WORKDIR /user/src/app
+WORKDIR /usr/src/app
 
 COPY package*.json ./
 
@@ -12,8 +12,8 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN npx nest build
+RUN npm run build
 
 EXPOSE 8080
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main"]

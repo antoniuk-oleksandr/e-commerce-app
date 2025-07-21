@@ -1,0 +1,11 @@
+test
+node_modules
+test-database
+database
+coverage
+.github
+dist
+docker-compose
+*.log
+*.md
+.git
