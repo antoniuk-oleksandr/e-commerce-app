@@ -12,6 +12,21 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: test_db
+          POSTGRES_PASSWORD: test_db
+          POSTGRES_DB: test_db
+        ports:
+          - 5431:5432
+    
+    env:
+      DATABASE_URL: postgres://test_db:test_db@localhost:5431/test_db
+      NODE_ENV: test
+      JWT_SECRET: test_secret
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,5 +39,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Run migrations
+        run: npx prisma migrate deploy
+
       - name: Run tests
-        run: npm run test
+        run: npm run test:ci/cd
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: antoniuk-oleksandr/e-commerce-app
